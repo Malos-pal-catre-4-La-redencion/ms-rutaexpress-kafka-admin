@@ -1,0 +1,37 @@
+# ============================================================================
+# CONFIGURACIÓN — sobreescribible por variables de entorno
+#   SERVER_PORT                puerto de este servicio (default 8085)
+#   KAFKA_BOOTSTRAP_SERVERS    lista de brokers, ej. localhost:9092,localhost:9093,localhost:9094
+# Este servicio es interno: solo lo llama el BFF, que ya valida el JWT y exige
+# rol Admin. En EC2 su puerto no debe estar abierto a internet.
+# ============================================================================
+server:
+  port: ${SERVER_PORT:8085}
+
+spring:
+  application:
+    name: ms-rutaexpress-kafka-admin
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092,localhost:9093,localhost:9094}
+
+# Valores por defecto al crear un tópico cuando el request no los especifica.
+rutaexpress:
+  kafka-admin:
+    defaults-topico:
+      particiones: 3
+      factor-replicacion: 3
+      retention-ms: 604800000   # 7 días
+      cleanup-policy: delete
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+logging:
+  level:
+    com.rutaexpress: DEBUG

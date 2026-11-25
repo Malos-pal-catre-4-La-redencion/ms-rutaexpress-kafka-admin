@@ -1,0 +1,6 @@
+# Copiar a application-local.yml (en .gitignore: NO se sube a Git).
+# Se usa con:  mvn spring-boot:run -Dspring-boot.run.profiles=local
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
+    # en EC2: las IPs/puertos privados de los 3 brokers
